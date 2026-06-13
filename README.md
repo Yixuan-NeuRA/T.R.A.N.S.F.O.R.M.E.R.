@@ -5,7 +5,9 @@ Recreational Mental Escape & Relaxation.
 
 A simulation of academic life disguised as research software (JupyterLab /
 MATLAB / RStudio). You pick an academic **civilization → discipline → career →
-research environment**, then publish your way toward a (terminal) ending.
+research environment**, then publish your way toward a (terminal) ending.  
+
+Click this link to start playing: https://yixuan-neura.github.io/T.R.A.N.S.F.O.R.M.E.R./
 
 ## Run
 
