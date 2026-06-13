@@ -1,0 +1,12 @@
+node_modules
+dist
+dist-ssr
+*.local
+.vite
+
+# build outputs / packaged deliverables (use GitHub Releases instead)
+/release
+*.zip
+
+# local editor/tool config (machine-specific paths)
+.claude/
