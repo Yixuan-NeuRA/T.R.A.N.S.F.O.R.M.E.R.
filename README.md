@@ -14,7 +14,7 @@ npm install
 npm run dev
 ```
 
-Then open the URL Vite prints (default http://localhost:5173).
+Then open the URL Vite prints (default https://yixuan-neura.github.io/T.R.A.N.S.F.O.R.M.E.R./).
 
 To ship a single double-clickable file:
 
