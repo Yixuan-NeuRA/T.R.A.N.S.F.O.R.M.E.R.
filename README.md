@@ -1,7 +1,7 @@
 # T.R.A.N.S.F.O.R.M.E.R.
 
 Task-avoiding Researcher's Academic Napping & Slack-off Framework for Optimised
-Recreational Mental Escape & Relaxation.
+Recreational Mental Escape & Relaxation
 
 A simulation of academic life disguised as research software (JupyterLab /
 MATLAB / RStudio). You pick an academic **civilization → discipline → career →
