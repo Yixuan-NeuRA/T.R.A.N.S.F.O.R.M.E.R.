@@ -10,3 +10,6 @@ dist-ssr
 
 # local editor/tool config (machine-specific paths)
 .claude/
+
+# Pages now deploys from CI (dist via Actions), not a committed folder
+docs/

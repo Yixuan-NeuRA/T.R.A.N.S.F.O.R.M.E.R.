@@ -22,6 +22,14 @@ To ship a single double-clickable file:
 npm run build      # produces a self-contained dist/index.html
 ```
 
+## Deploy
+
+Pushing to `main` auto-builds and deploys to GitHub Pages via
+[`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) — no manual build
+or copy needed. One-time setup: **Settings → Pages → Build and deployment →
+Source = GitHub Actions**. The playable URL then appears in the Actions run and
+on the Pages settings page.
+
 ## Play
 
 - Configure your run in the startup wizard (civilization, discipline, career,
