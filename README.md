@@ -70,8 +70,9 @@ graduation thresholds, funding-loss, meaning decay, …).
 - **Save** persists them to `localStorage` and **syncs across tabs** — so you
   can keep the panel open in one tab and the game in another; saving updates the
   game tab live.
-- **Reset** restores defaults. (To ship to players, remove the `<DevPanel>` /
-  toggle button in `src/App.tsx`.)
+- **Reset** restores defaults. (To ship to players, drop the `dev` entry from
+  the panel registry in `src/systems/panels.ts`; optionally also remove the
+  `Ctrl+\`` / `F9` handler in `src/App.tsx`.)
 
 Full strategy guide: `完整攻略.md`.
 
