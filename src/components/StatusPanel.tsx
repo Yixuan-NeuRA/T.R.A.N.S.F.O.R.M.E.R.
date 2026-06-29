@@ -122,9 +122,9 @@ export default function StatusPanel() {
       </div>
 
       <button
-        onClick={s.toggleNetwork}
+        onClick={() => s.togglePanel('network')}
         className={`ml-auto rounded px-2 py-0.5 font-mono text-[10px] transition-colors ${
-          s.showNetwork
+          s.openPanels.includes('network')
             ? 'bg-neutral-800 text-sky-300'
             : 'text-neutral-400 hover:bg-neutral-800'
         }`}

@@ -42,6 +42,7 @@ import { compressNarrative } from '../systems/narrativeSystem'
 import { ENDINGS } from '../systems/endings'
 import { useTuning } from '../systems/tuning'
 import type { LocationId } from '../systems/locationSystem'
+import type { PanelId } from '../systems/panels'
 import type { Paper, PaperComponent, ResourceKey } from '../types/paper'
 
 const clamp = (n: number) => Math.max(0, Math.min(100, Math.round(n)))
@@ -115,7 +116,8 @@ interface GameState {
   // Phase 9 — hidden ecosystem scalars
   influence: number
   collab: number
-  showNetwork: boolean
+  // UI — open dockable / overlay windows (see systems/panels.ts)
+  openPanels: PanelId[]
   // E — rival labs (hidden values; only ranking is shown)
   rivals: Rival[]
   fieldHeat: number
@@ -137,7 +139,9 @@ interface GameState {
   resubmit: (id: string) => void
   abandonDraft: (id: string) => void
   applyForGrant: () => void
-  toggleNetwork: () => void
+  togglePanel: (id: PanelId) => void
+  openPanel: (id: PanelId) => void
+  closePanel: (id: PanelId) => void
   submitThesis: () => void
   chooseEnding: (kind: 'faculty' | 'exit' | 'distinguished' | 'extension') => void
   nextDay: () => void
@@ -260,7 +264,7 @@ export const useGameStore = create<GameState>((set) => ({
   meaning: MEANING_START,
   influence: 0,
   collab: 0,
-  showNetwork: false,
+  openPanels: [],
   rivals: [],
   fieldHeat: 0,
   funding: 60,
@@ -748,7 +752,18 @@ export const useGameStore = create<GameState>((set) => ({
       }
     }),
 
-  toggleNetwork: () => set((s) => ({ showNetwork: !s.showNetwork })),
+  togglePanel: (id) =>
+    set((s) => ({
+      openPanels: s.openPanels.includes(id)
+        ? s.openPanels.filter((p) => p !== id)
+        : [...s.openPanels, id],
+    })),
+  openPanel: (id) =>
+    set((s) =>
+      s.openPanels.includes(id) ? s : { openPanels: [...s.openPanels, id] },
+    ),
+  closePanel: (id) =>
+    set((s) => ({ openPanels: s.openPanels.filter((p) => p !== id) })),
 
   submitThesis: () =>
     set((s) => {

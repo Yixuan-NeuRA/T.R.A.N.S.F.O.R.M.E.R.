@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import MenuBar from './components/MenuBar'
 import FileExplorer from './components/FileExplorer'
 import StatusPanel from './components/StatusPanel'
@@ -6,20 +6,30 @@ import Notebook from './components/Notebook'
 import Terminal from './components/Terminal'
 import StatusBarBottom from './components/StatusBarBottom'
 import StartScreen from './components/StartScreen'
-import NetworkView from './components/NetworkView'
-import DevPanel from './components/DevPanel'
 import { startGlitchClock } from './systems/glitch'
 import { useGameStore } from './store/useGameStore'
+import { panelsInSlot, type PanelDef } from './systems/panels'
+
+// Mounts a single registered panel and wires its standard onClose to the store.
+function PanelHost({ def }: { def: PanelDef }) {
+  const closePanel = useGameStore((s) => s.closePanel)
+  const Comp = def.component
+  return <Comp onClose={() => closePanel(def.id)} />
+}
 
 export default function App() {
   const careerPath = useGameStore((s) => s.careerPath)
   const discipline = useGameStore((s) => s.discipline)
-  const showNetwork = useGameStore((s) => s.showNetwork)
   const graduated = useGameStore((s) => s.graduated)
   const collapsePhase = useGameStore((s) => s.collapsePhase)
   const advanceCollapse = useGameStore((s) => s.advanceCollapse)
+  const openPanels = useGameStore((s) => s.openPanels)
+  const togglePanel = useGameStore((s) => s.togglePanel)
 
-  const [devOpen, setDevOpen] = useState(false)
+  const openSide = panelsInSlot('side').filter((p) => openPanels.includes(p.id))
+  const openOverlay = panelsInSlot('overlay').filter((p) =>
+    openPanels.includes(p.id),
+  )
 
   useEffect(() => {
     startGlitchClock()
@@ -32,12 +42,12 @@ export default function App() {
     const onKey = (e: KeyboardEvent) => {
       if ((e.ctrlKey && e.code === 'Backquote') || e.code === 'F9') {
         e.preventDefault()
-        setDevOpen((v) => !v)
+        togglePanel('dev')
       }
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [])
+  }, [togglePanel])
 
   // Drive the staged Academic Collapse Sequence after any ending.
   useEffect(() => {
@@ -60,7 +70,9 @@ export default function App() {
               <StatusPanel />
               <div className="flex min-h-0 flex-1">
                 <Notebook />
-                {showNetwork && <NetworkView />}
+                {openSide.map((p) => (
+                  <PanelHost key={p.id} def={p} />
+                ))}
               </div>
               <Terminal />
             </div>
@@ -71,8 +83,10 @@ export default function App() {
         <StartScreen />
       )}
 
-      {/* Developer tuning panel — hidden; toggle only with Ctrl+` */}
-      {devOpen && <DevPanel onClose={() => setDevOpen(false)} />}
+      {/* Floating overlay windows (e.g. Dev Tuning, toggled with Ctrl+`) */}
+      {openOverlay.map((p) => (
+        <PanelHost key={p.id} def={p} />
+      ))}
     </>
   )
 }
